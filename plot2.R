@@ -1,0 +1,11 @@
+#require(lubridate)
+ExData <- read.csv("~/R/household_power_consumption.txt", sep=";")
+ExData <- data.table(ExData)
+ExDataFeb <- ExData[as.character(ExData$Date) %in% c("1/2/2007", "2/2/2007"),]
+ExDataFeb$Date <- as.Date(ExDataFeb$Date, "%d/%m/%Y")
+##ExDataFeb$datetime <- strptime(paste(ExDataFeb$Date, ExDataFeb$Time), "%d/%m/%Y %H:%M:%S")
+ExDataFeb$datetime <- paste(ExDataFeb$Date, ExDataFeb$Time)
+ExDataFeb$datetime <- as.POSIXct(ExDataFeb$datetime, format="%d/%Y/%m %H:%M:%S")
+png(filename = "plot2.png")
+with(ExDataFeb, plot(datetime, as.numeric(as.character(Global_active_power)), type="l", xlab="", ylab="Global Active Power (kilowatts)"))
+dev.off()
